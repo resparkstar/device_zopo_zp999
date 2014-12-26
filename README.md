@@ -1,4 +1,5 @@
-device_zopo_zp999
-=================
+android_device_zopo_zp999 (mt6595)
 
-Device tree folder for ZOPO ZP999 with new mt6595 platform.
+Zopo zp999 device folder
+
+For creating CWM recovery, TWRP and CTR recovery.

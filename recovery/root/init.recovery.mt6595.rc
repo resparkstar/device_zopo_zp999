@@ -1,0 +1,155 @@
+# Copyright (C) 2012 The Android Open Source Project
+#
+# IMPORTANT: Do not create world writable files or directories.
+# This is a common source of Android security bugs.
+#
+
+import /init.ssd.rc
+import /init.usb.rc
+import /init.trace.rc
+import /init.protect.rc
+
+on init
+
+    export USBOTG_STORAGE /storage/usbotg
+
+# Backward compatibility
+    symlink /system/etc /etc
+
+# Change ION driver permission
+    chmod 0644 /dev/ion
+
+# Change MMP driver permission
+    chmod 0644 /dev/mmp
+
+# change lk_env permission
+    chown root system /proc/lk_env
+    chmod 0660 /proc/lk_env
+
+on fs
+		
+    #change partition permissions
+    exec /system/bin/chmod 0640 /dev/block/platform/mtk-msdc.0/by-name/boot
+    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/boot
+    exec /system/bin/chmod 0640 /dev/block/platform/mtk-msdc.0/by-name/recovery
+    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/recovery
+    exec /system/bin/chmod 0640 /dev/block/platform/mtk-msdc.0/by-name/secro
+    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/secro
+    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/seccfg
+    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/seccfg
+    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/proinfo
+    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/proinfo
+    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/otp
+    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/otp
+    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/nvram
+    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/nvram
+    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/para
+    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/para
+    exec /system/bin/chmod 0660 /dev/block/platform/mtk-msdc.0/by-name/logo
+    exec /system/bin/chown root:system /dev/block/platform/mtk-msdc.0/by-name/logo
+
+# -----------------------
+# Add by MTK
+    # md32 boot
+    chown root system /dev/md32
+    chmod 0440 /dev/md32
+    chown root system /sys/class/misc/md32/md32_mobile_log
+    chmod 0660 /sys/class/misc/md32/md32_mobile_log
+    write /sys/class/misc/md32/md32_boot 1
+
+    # Touch Panel
+    # chmod 0664 /dev/touch
+    chown root diag /sys/module/tpd_setting/parameters/tpd_calmat
+    chown root diag /sys/module/tpd_setting/parameters/tpd_em_debounce_time
+    chown root diag /sys/module/tpd_setting/parameters/tpd_mode
+    chown root diag /sys/module/tpd_setting/parameters/tpd_em_debounce_time0
+    chown root diag /sys/module/tpd_setting/parameters/tpd_em_debounce_time1
+    chown root diag /sys/module/tpd_setting/parameters/tpd_em_spl_num
+    chown root diag /sys/module/tpd_setting/parameters/tpd_em_pressure_threshold
+    chown root diag /sys/module/tpd_setting/parameters/tpd_em_auto_time_interval
+    chown root diag /sys/module/tpd_setting/parameters/tpd_em_sample_cnt
+    chown root diag /sys/module/tpd_setting/parameters/tpd_em_asamp
+    chown root diag /sys/module/tpd_debug/parameters/tpd_em_log
+    chown root diag /sys/module/tpd_debug/parameters/tpd_em_log_to_fs
+
+    chmod 0666 /dev/pmem_multimedia
+
+    #Charging Battery
+    chown radio radio /sys/devices/platform/battery/Charging_CallState
+
+    chmod 0660 /dev/graphics/fb0
+    chown system graphics /dev/graphics/fb0
+
+    # DISP
+    chmod 0444 /dev/mtk_disp
+
+    # otg_test
+    chown root radio /dev/mt_otg_test
+    chmod 0660 /dev/mt_otg_test
+
+    # mu3d_test
+    # mknod /dev/cli c 234 0
+    # chmod 0666 /dev/cli
+    # chown system system /dev/cli
+  
+
+    # usb
+    # mknod /dev/clih c 235 0
+    # chmod 0666 /dev/clih
+    # chown system system /dev/clih
+
+# End of adding by MTK drivers
+# -----------------------
+
+on boot
+
+    chmod 0664 /sys/class/leds/lcd-backlight/brightness
+    chown system system /sys/class/timed_output/vibrator/enable
+    chown system system /sys/class/leds/keyboard-backlight/brightness
+    chown system radio  /sys/class/leds/lcd-backlight/brightness
+    chown system system /sys/class/leds/button-backlight/brightness
+    chown system system /sys/class/leds/jogball-backlight/brightness
+    chown system system /sys/class/leds/red/brightness
+    chown system system /sys/class/leds/green/brightness
+    chown system system /sys/class/leds/blue/brightness
+    chown system system /sys/class/leds/red/device/grpfreq
+    chown system system /sys/class/leds/red/device/grppwm
+    chown system system /sys/class/leds/red/device/blink
+    chown system system /sys/class/timed_output/vibrator/enable
+    chown root   system /sys/kernel/debug/binder/transaction_log_enable
+    chown root   system /sys/kernel/debug/binder/perf_evalue
+    chown root radio /proc/cmdline
+
+	chown root   radio  /sys/class/leds/lcd-backlight/duty
+	chown root   radio  /sys/class/leds/lcd-backlight/div
+	chown system system /sys/class/leds/lcd-backlight/trigger
+	chown system system /sys/class/leds/button-backlight/trigger
+	chown system system /sys/class/leds/keyboard-backlight/trigger
+	chown system system /sys/class/leds/jogball-backlight/trigger
+	chown system system /sys/class/leds/red/trigger
+	chown system system /sys/class/leds/green/trigger
+	chown system system /sys/class/leds/blue/trigger
+
+# define device for EMCSMDLOGGER
+    chown system radio /dev/ttyGS3
+    chmod 0660 /dev/ttyGS3
+
+#Define device for ATCID
+    chmod 660 /dev/ttyGS0
+    chown system /dev/ttyGS0
+    chmod 660 /dev/ttyGS1
+    chown system /dev/ttyGS1
+
+# Set these so we can remotely update SELinux policy
+    chown system system /sys/fs/selinux/load
+    chown system system /sys/fs/selinux/enforce
+
+#Define device for ATCID
+    chmod 660 /dev/ttyGS0
+    chown system /dev/ttyGS0
+    chmod 660 /dev/ttyGS1
+    chown system /dev/ttyGS1
+
+service insmod insmod
+    disabled
+    oneshot
