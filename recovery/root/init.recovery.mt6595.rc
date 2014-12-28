@@ -6,8 +6,6 @@
 
 import /init.ssd.rc
 import /init.usb.rc
-import /init.trace.rc
-import /init.protect.rc
 
 on init
 
