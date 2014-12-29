@@ -33,7 +33,7 @@ TARGET_CPU_ABI := armeabi-v7a
 TARGET_CPU_ABI2 := armeabi
 TARGET_ARCH_VARIANT := armv7-a-neon
 TARGET_CPU_VARIANT := cortex-a7
-
+# Second Architecture
 TARGET_2ND_ARCH := arm
 TARGET_2ND_ARCH_VARIANT := armv7-a-neon
 TARGET_2ND_CPU_VARIANT := cortex-a17
@@ -59,9 +59,6 @@ BOARD_FLASH_BLOCK_SIZE := 512
 TARGET_USERIMAGES_USE_EXT4 := true
 TARGET_USERIMAGES_SPARSE_EXT_DISABLED := false
 
-TARGET_GLOBAL_CFLAGS   += -mfpu=neon -mfloat-abi=softfp
-TARGET_GLOBAL_CPPFLAGS += -mfpu=neon -mfloat-abi=softfp
-
 # Recovery
 RECOVERY_VARIANT := carliv
 TARGET_PREBUILT_KERNEL := $(LOCAL_PATH)/prebuilt/kernel
@@ -82,6 +79,7 @@ TARGET_RECOVERY_LCD_BACKLIGHT_PATH := \"/sys/class/leds/lcd-backlight/brightness
 BOARD_EGL_CFG := $(LOCAL_PATH)/egl.cfg
 USE_OPENGL_RENDERER := true
 TARGET_RECOVERY_PIXEL_FORMAT := "RGBA_8888"
+NUM_FRAMEBUFFER_SURFACE_BUFFERS := 3
 
 #TWRP
 #RECOVERY_VARIANT := twrp
@@ -92,6 +90,7 @@ TW_CUSTOM_BATTERY_PATH := /sys/devices/platform/battery/power_supply/battery
 RECOVERY_GRAPHICS_USE_LINELENGTH := true
 TWHAVE_SELINUX := true
 TW_FLASH_FROM_STORAGE := true
+BOARD_HAS_NO_REAL_SDCARD := true
 TW_INTERNAL_STORAGE_PATH := "/sdcard"
 TW_INTERNAL_STORAGE_MOUNT_POINT := "sdcard"
 TW_EXTERNAL_STORAGE_PATH := "/external_sd"
